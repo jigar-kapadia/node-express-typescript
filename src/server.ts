@@ -3,6 +3,7 @@ import express, { Application } from "express";
 import socketIO, { Server as SocketIOServer } from "socket.io";
 import { createServer, Server as HTTPServer } from "http";
 import path from "path";
+import cors from "cors";
 
 export class Server {
   private httpServer: HTTPServer;
@@ -10,6 +11,13 @@ export class Server {
   private io: SocketIOServer;
   private readonly DEFAULT_PORT = Number(process.env.PORT) || 5000;
   private activeSockets: string[] = [];
+  private options: cors.CorsOptions = {
+    allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token"],
+    credentials: true,
+    methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+    origin: "*",
+    preflightContinue: false
+  }
   constructor() {
     this.initialzeServerProperties();
     // this.app.get("/", (req, res) => {
@@ -21,10 +29,14 @@ export class Server {
   private initialzeServerProperties(): void {
     this.app = express();
     this.httpServer = createServer(this.app);
+    this.setUpCORS();
     this.io = socketIO(this.httpServer);
     this.staticFileConfig();
     this.expressRoutesConfig();
     this.socketConnection();
+  }
+  private setUpCORS(): void {
+    this.app.use(cors(this.options));
   }
 
   private staticFileConfig(): void {
