@@ -15,6 +15,7 @@ export class Server {
     // this.app.get("/", (req, res) => {
     //   res.json({ message: "Hello from the other side" });
     // });
+    console.log('server called');
   }
 
   private initialzeServerProperties(): void {
