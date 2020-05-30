@@ -61,7 +61,7 @@ async function callUser(socketId) {
 }
 
 // importScripts
-const socket = io.connect("http://localhost:5000");
+const socket = io.connect("https://videoconfy.herokuapp.com");
 //Add new user on Client
 socket.on("update-user-list", ({ users }) => {
   updateUserList(users);
