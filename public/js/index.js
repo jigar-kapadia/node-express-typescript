@@ -126,6 +126,11 @@ peerConnection.ontrack = function ({ streams: [stream] }) {
     remoteVideo.srcObject = stream;
   }
 };
+
+var isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+
+console.log(isChrome);
+
 //New version supported in MOzilla and IOS
 navigator.mediaDevices.getUserMedia({ video: true, audio: true })
 .then(function(stream) {
