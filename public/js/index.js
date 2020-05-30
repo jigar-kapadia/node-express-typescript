@@ -126,22 +126,38 @@ peerConnection.ontrack = function ({ streams: [stream] }) {
     remoteVideo.srcObject = stream;
   }
 };
-
-navigator.getUserMedia(
-  { video: true, audio: true },
-  (stream) => {
-    const localVideo = document.getElementById("local-video");
+//New version supported in MOzilla and IOS
+navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+.then(function(stream) {
+  /* use the stream */
+  const localVideo = document.getElementById("local-video");
     if (localVideo) {
       localVideo.srcObject = stream;
     }
-    stream
+  stream
       .getTracks()
       .forEach((track) => peerConnection.addTrack(track, stream));
-  },
-  (error) => {
-    console.log(error);
-  }
-);
+})
+.catch(function(err) {
+  /* handle the error */
+});
+
+//Deprecated Version
+//navigator.getUserMedia(
+//  { video: true, audio: true },
+//  (stream) => {
+//    const localVideo = document.getElementById("local-video");
+ //   if (localVideo) {
+ //     localVideo.srcObject = stream;
+ //   }
+ //   stream
+   //   .getTracks()
+     // .forEach((track) => peerConnection.addTrack(track, stream));
+  //},
+  //(error) => {
+    //console.log(error);
+  //}
+//);
 
 // this.io.connection("connection", (socket) => {
 //   const existingSocket = this.activeSockets.find(
